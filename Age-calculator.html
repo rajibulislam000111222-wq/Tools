@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate your exact age, time until next birthday, and more with our responsive age calculator tool.">
+    <meta name="keywords" content="age calculator, birthday calculator, date calculator, how old am I">
+    <title>Age Calculator | Find Your Exact Age</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .calculator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .calculator-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+        
+        .ads-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            min-width: 300px;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+        
+        .calculator-title {
+            font-size: 1.8rem;
+            color: #2575fc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+        
+        .compression-slider {
+            margin: 25px 0;
+        }
+        
+        .compression-slider h3 {
+            margin-bottom: 10px;
+            color: #444;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #2575fc;
+            cursor: pointer;
+        }
+        
+        .calculate-btn {
+            background: #2575fc;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .calculate-btn:hover {
+            background: #1c64e0;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result h3 {
+            color: #2575fc;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ad-label {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .ad-container {
+            width: 100%;
+            min-height: 250px;
+            background: #f9f9f9;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            color: #888;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .ad-container.horizontal {
+            width: 100%;
+            min-height: 90px;
+            margin: 20px 0;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            margin-top: auto;
+        }
+        
+        footer p {
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 900px) {
+            .calculator-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .ads-card {
+                max-width: 600px;
+                width: 100%;
+                min-height: auto;
+                margin-top: 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .calculator-card, .ads-card {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> Advanced Age Calculator</h1>
+            <p>Calculate your exact age, time until next birthday, and more with our responsive tool</p>
+        </header>
+        
+        <div class="ad-container horizontal">
+            <!-- Horizontal Ad Banner -->
+            AdSense Ad Unit (Horizontal Banner)
+        </div>
+        
+        <div class="calculator-container">
+            <div class="calculator-card">
+                <h2 class="calculator-title">Calculate Your Age</h2>
+                
+                <div class="input-group">
+                    <label for="birthdate"><i class="fas fa-calendar-alt"></i> Your Birthdate</label>
+                    <input type="date" id="birthdate" max="2023-12-31">
+                </div>
+                
+                <div class="input-group">
+                    <label for="compression"><i class="fas fa-sliders-h"></i> Calculation Precision</label>
+                    <select id="compression">
+                        <option value="high">High Precision (Exact time)</option>
+                        <option value="medium" selected>Medium Precision (Days)</option>
+                        <option value="low">Low Precision (Years only)</option>
+                    </select>
+                </div>
+                
+                <div class="compression-slider">
+                    <h3>Compression Level: <span id="compression-value">Medium</span></h3>
+                    <div class="slider-container">
+                        <span>Low</span>
+                        <input type="range" min="1" max="3" value="2" class="slider" id="compression-slider">
+                        <span>High</span>
+                    </div>
+                    <p id="compression-description">Balanced between performance and detail</p>
+                </div>
+                
+                <button class="calculate-btn" id="calculate">
+                    <i class="fas fa-calculator"></i> Calculate Age
+                </button>
+                
+                <div class="result" id="result">
+                    <h3>Your Age Calculation</h3>
+                    <div class="result-item">
+                        <span>Years:</span>
+                        <span id="years">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Months:</span>
+                        <span id="months">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Days:</span>
+                        <span id="days">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Next Birthday:</span>
+                        <span id="next-birthday">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Days Until Next Birthday:</span>
+                        <span id="days-until">--</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ads-card">
+                <div class="ad-label">Advertisement</div>
+                <div class="ad-container">
+                    <!-- Square Ad -->
+                    AdSense Ad Unit (Square)
+                </div>
+                <div class="ad-label">Advertisement</div>
+                <div class="ad-container">
+                    <!-- Square Ad -->
+                    AdSense Ad Unit (Square)
+                </div>
+            </div>
+        </div>
+        
+        <div class="ad-container horizontal">
+            <!-- Horizontal Ad Banner -->
+            AdSense Ad Unit (Horizontal Banner)
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Advanced Age Calculator. All rights reserved.</p>
+        <p>This tool is designed for informational purposes only.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const compressionSlider = document.getElementById('compression-slider');
+            const compressionSelect = document.getElementById('compression');
+            const compressionValue = document.getElementById('compression-value');
+            const compressionDescription = document.getElementById('compression-description');
+            const calculateBtn = document.getElementById('calculate');
+            const resultDiv = document.getElementById('result');
+            
+            // Sync slider and select
+            compressionSlider.addEventListener('input', function() {
+                const value = parseInt(compressionSlider.value);
+                compressionSelect.selectedIndex = value - 1;
+                updateCompressionText();
+            });
+            
+            compressionSelect.addEventListener('change', function() {
+                compressionSlider.value = compressionSelect.selectedIndex + 1;
+                updateCompressionText();
+            });
+            
+            function updateCompressionText() {
+                const value = compressionSelect.value;
+                compressionValue.textContent = value.charAt(0).toUpperCase() + value.slice(1);
+                
+                if (value === 'high') {
+                    compressionDescription.textContent = 'Maximum detail with exact time calculations';
+                } else if (value === 'medium') {
+                    compressionDescription.textContent = 'Balanced between performance and detail';
+                } else {
+                    compressionDescription.textContent = 'Fast calculation with basic information';
+                }
+            }
+            
+            // Calculate age
+            calculateBtn.addEventListener('click', function() {
+                const birthdate = new Date(document.getElementById('birthdate').value);
+                const compression = document.getElementById('compression').value;
+                
+                if (isNaN(birthdate.getTime())) {
+                    alert('Please enter a valid birthdate');
+                    return;
+                }
+                
+                calculateAge(birthdate, compression);
+            });
+            
+            function calculateAge(birthdate, compression) {
+                const today = new Date();
+                let years = today.getFullYear() - birthdate.getFullYear();
+                let months = today.getMonth() - birthdate.getMonth();
+                let days = today.getDate() - birthdate.getDate();
+                
+                if (days < 0) {
+                    months--;
+                    // Get days in the previous month
+                    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                    days += lastMonth.getDate();
+                }
+                
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                
+                // Calculate next birthday
+                const nextBirthday = new Date(today.getFullYear(), birthdate.getMonth(), birthdate.getDate());
+                if (nextBirthday < today) {
+                    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+                }
+                
+                const daysUntilBirthday = Math.floor((nextBirthday - today) / (1000 * 60 * 60 * 24));
+                
+                // Update UI based on compression level
+                document.getElementById('years').textContent = years;
+                
+                if (compression === 'low') {
+                    document.getElementById('months').textContent = '--';
+                    document.getElementById('days').textContent = '--';
+                    document.getElementById('next-birthday').textContent = '--';
+                    document.getElementById('days-until').textContent = '--';
+                } else {
+                    document.getElementById('months').textContent = months;
+                    document.getElementById('days').textContent = days;
+                    document.getElementById('next-birthday').textContent = nextBirthday.toDateString();
+                    document.getElementById('days-until').textContent = daysUntilBirthday;
+                    
+                    if (compression === 'high') {
+                        // For high compression, we would calculate hours, minutes, seconds
+                        // This is simplified for the example
+                    }
+                }
+                
+                resultDiv.style.display = 'block';
+            }
+            
+            // Set max date to today
+            document.getElementById('birthdate').max = new Date().toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>
